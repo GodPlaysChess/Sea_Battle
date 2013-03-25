@@ -28,7 +28,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
 
     Game() {
-        super("Car Motion Simulator");
+        super("Sea Battle");
         setSize(1224, 768);
         setLocation(300, 120);
         setVisible(true);
@@ -39,10 +39,9 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         this.addKeyListener(this);
         this.addMouseListener(this);
 
-
         sea = new Field(800, 500);
         ship = new Ship(new Vec(500, 350));
-        enemy = new Enemy(new Vec(200,300));
+        enemy = new Enemy(sea.spawnPoint1);
     }
 
     public void update() {
@@ -51,8 +50,18 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         enemy.update();
         moveBullets();
 
+        enemy.addShip(sea.spawnPoint1);
+
 
     }
+
+    public void remove(ObjectOnMap o){
+
+
+
+    }
+
+
 
     public void moveBullets() {
         for (int j = 0; j < Bullets.size(); j++) {
@@ -63,23 +72,19 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     }
 
 
-
-
         private void render_statistics(Graphics2D g) {
 
             g.setColor(Color.BLACK);
             g.drawRect(900, 100, 250, 500);
-            g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
+            //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
             g.drawString("Your ship position", 980, 150);
-            g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
+            //g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
             g.drawString(ship.getPosition().toString(), 1000, 180);
             g.drawString(ship.ship_turret.fpos.toString(), 1000, 210);
-            g.drawString(getMousePosition().toString(),310,240);
+           // g.drawString(getMousePosition().toString(),310,240);
 
 
             // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);
-
-
 
         }
 

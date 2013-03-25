@@ -105,4 +105,12 @@ public class Vec {
         return (getX() + " , " +getY());
     }
 
+    static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
+
+        float a = (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() + b2.getX() * a1.getY() + b1.getX() * b2.getY() - b2.getX() * b1.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
+        float b = -(a1.getX() * a2.getY() - a2.getX() * a1.getY() - a1.getX() * b1.getY() + b1.getX() * a1.getY() + a2.getX() * b1.getY() - b1.getX() * a2.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
+
+        return (a > 0 && a < 1 && b > 0 && b < 1);
+    }
+
 }

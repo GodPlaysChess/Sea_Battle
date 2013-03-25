@@ -5,7 +5,8 @@ public class Enemy {
 
     ArrayList<Ship> Ships = new ArrayList<Ship>();
     ArrayList<Turret> Turrets = new ArrayList<Turret>();
-    private Vec spawnPoint = new Vec(120, 150);
+    private int maxEnemyShips = 10;
+    private int shipCD = 50;
 
 
     Enemy(Vec v) {
@@ -18,16 +19,22 @@ public class Enemy {
     }
 
     public void update() {
-
         for (int i = 0; i < Ships.size(); i++) {
-            // Ships.get(i).ship_turret.setPosition(Ships.get(i).getPosition());
-            // Ships.get(i).ship_turret.fpos.setV(Ships.get(i).ship_turret.getPosition().addReturn(Ships.get(i).ship_turret.getFire_direction().multiplied(10)));
-            // Ships.get(i).ship_turret.incTimeToCD();
+            Ships.get(i).update();
+            if (Ships.get(i).decomposition == 0)
+                Ships.remove(i);
 
-            Ships.get(i).update(); // checking for collision here,
         }
 
+        if (Ships.size() < 10 && shipCD<50)
+            shipCD++;
+    }
 
+    public void addShip(Vec v) {
+        if (Ships.size() < maxEnemyShips && shipCD == 50) {
+            Ships.add(new Ship(v));
+            shipCD = 0;
+        }
     }
 
 

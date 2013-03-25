@@ -10,6 +10,9 @@ public class ObjectOnMap {
     protected Vec velocity;
     protected boolean is_destroyed = false;
 
+    protected int decomposition = 100;                                           // amount of time in Millisec, the destroyed body to leave on the field.
+    private int dec_speed = 0;
+
 
     private boolean bullet_hit = false;
 
@@ -20,42 +23,37 @@ public class ObjectOnMap {
 
     }
 
-    /**
-     * Put in Geom Help
-     */
-    static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
-
-        float a = (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() + b2.getX() * a1.getY() + b1.getX() * b2.getY() - b2.getX() * b1.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
-        float b = -(a1.getX() * a2.getY() - a2.getX() * a1.getY() - a1.getX() * b1.getY() + b1.getX() * a1.getY() + a2.getX() * b1.getY() - b1.getX() * a2.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
-
-        return (a > 0 && a < 1 && b > 0 && b < 1);
-    }
-
     protected void destroy() {
         is_destroyed = true;
+        decompositionStart();
     }
+
+    private void decompositionStart() {
+        dec_speed = 10;
+    }
+
+
 
     protected void update() {
         checkCollision();
+        decomposition-=dec_speed;
     }
 
 
     public boolean checkCollision() {
-
         for (int j = Game.Bullets.size() - 1; j >= 0; j--)
             for (int i = 0; i < Points.size() - 1; i++) {
-                if (linesIntersect(Game.Bullets.get(j).getPos(), Game.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
+                if (Vec.linesIntersect(Game.Bullets.get(j).getPos(), Game.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
                     System.out.println("HIT");
                     destroy();
-                    //
-                    //Game.Bullets.remove(j);
+                    Game.Bullets.remove(j);
                     break;
                 }
             }
-
         return false;
 
     }
+
 
 
 }
