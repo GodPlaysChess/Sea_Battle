@@ -5,7 +5,7 @@ public class Turret {
     public final int cooldown; //in millisec
 
     private float fire_angle = 0;
-    public Vec fpos = new Vec(0, 0);
+    public Vec fpos = new Vec(0, 0);                //Vector of the center of the cannon
 
     private int TimeToCD = 1000;
 
@@ -55,15 +55,14 @@ public class Turret {
     public void fire() {
         if (TimeToCD > cooldown) {
             TimeToCD = 0;
-            Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));          ////was getPosition()/ getFireDirection()
-            System.out.println((getPosition().addReturn(getFire_direction().multiplied(30))).toString());
+            Game.Bullets.add(new Bullet(fpos.addReturn(getFire_direction().multiplied(15)), getFire_direction()));   // was Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));
+            //System.out.println(Game.Bullets.get(0).getPos().toString());
         }
     }
 
-    public void incTimeToCD(){
+    public void incTimeToCD() {
         TimeToCD++;
     }
-
 
 
 }

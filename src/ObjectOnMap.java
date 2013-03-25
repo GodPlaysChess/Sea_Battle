@@ -47,7 +47,8 @@ public class ObjectOnMap {
                 if (linesIntersect(Game.Bullets.get(j).getPos(), Game.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
                     System.out.println("HIT");
                     destroy();
-                    Game.Bullets.remove(j);
+                    //
+                    //Game.Bullets.remove(j);
                     break;
                 }
             }

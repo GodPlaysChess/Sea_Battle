@@ -2,11 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-public class Game extends JFrame implements KeyListener {
+public class Game extends JFrame implements KeyListener, MouseListener {
 
 
     private Ship ship = null;
@@ -35,6 +37,7 @@ public class Game extends JFrame implements KeyListener {
 
         this.setFocusable(true);
         this.addKeyListener(this);
+        this.addMouseListener(this);
 
 
         sea = new Field(800, 500);
@@ -62,12 +65,17 @@ public class Game extends JFrame implements KeyListener {
 
 
 
-        private void render_statistics(Graphics2D g, Ship s) {
+        private void render_statistics(Graphics2D g) {
 
             g.setColor(Color.BLACK);
             g.drawRect(900, 100, 250, 500);
-            g.drawString(String.valueOf(s.is_destroyed), 910, 150);
-            g.drawString(s.getPosition().toString(), 910, 180);
+            g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
+            g.drawString("Your ship position", 980, 150);
+            g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
+            g.drawString(ship.getPosition().toString(), 1000, 180);
+            g.drawString(ship.ship_turret.fpos.toString(), 1000, 210);
+            g.drawString(getMousePosition().toString(),310,240);
+
 
             // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);
 
@@ -85,7 +93,7 @@ public class Game extends JFrame implements KeyListener {
             sea.render(g);
             ship.render(g);
             enemy.render(g);
-            render_statistics(g,enemy.Ships.get(0));
+            render_statistics(g);
 
             for (int j = 0; j < Bullets.size(); j++) {
                 Bullets.get(j).render(g);
@@ -176,6 +184,30 @@ public class Game extends JFrame implements KeyListener {
 
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
 
 
