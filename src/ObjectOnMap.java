@@ -24,27 +24,11 @@ public class ObjectOnMap {
      * Put in Geom Help
      */
     static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
-        float a;
-        float b;
-        float c;
-        float d;
-        float Xis;
 
-     /*   if (a1.getX() == a2.getX()) {
-            Xis = a1.getX();
-            return ((Xis > a1.getX() && Xis < a2.getX()) || (Xis > a2.getX() && Xis < a1.getX())&&(Xis > b1.getX() && Xis < b2.getX()) || (Xis > b2.getX() && Xis < b1.getX()));
-        }
-        if (b1.getX() == b2.getX()) {
-            Xis = b1.getX();
-            return ((Xis > a1.getX() && Xis < a2.getX()) || (Xis > a2.getX() && Xis < a1.getX())&&(Xis > b1.getX() && Xis < b2.getX()) || (Xis > b2.getX() && Xis < b1.getX()));
-        }*/
+        float a = (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() + b2.getX() * a1.getY() + b1.getX() * b2.getY() - b2.getX() * b1.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
+        float b = -(a1.getX() * a2.getY() - a2.getX() * a1.getY() - a1.getX() * b1.getY() + b1.getX() * a1.getY() + a2.getX() * b1.getY() - b1.getX() * a2.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
 
-        a = (a1.getY() - a2.getY()) / (a1.getX() - a2.getX());
-        b = a1.getY() - a1.getX() * a;
-        c = (b1.getY() - b2.getY()) / (b1.getX() - b2.getX());
-        d = b1.getY() - b1.getX() * c;
-        Xis = (b - d) / (c - a);
-        return ((Xis > a1.getX() && Xis < a2.getX()) || (Xis > a2.getX() && Xis < a1.getX())&&(Xis > b1.getX() && Xis < b2.getX()) || (Xis > b2.getX() && Xis < b1.getX()));
+        return (a > 0 && a < 1 && b > 0 && b < 1);
     }
 
     protected void destroy() {

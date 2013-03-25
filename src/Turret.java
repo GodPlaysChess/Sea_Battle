@@ -55,7 +55,8 @@ public class Turret {
     public void fire() {
         if (TimeToCD > cooldown) {
             TimeToCD = 0;
-            Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(25)), getFire_direction()));          ////was getPosition()/ getFireDirection()
+            Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));          ////was getPosition()/ getFireDirection()
+            System.out.println((getPosition().addReturn(getFire_direction().multiplied(30))).toString());
         }
     }
 
