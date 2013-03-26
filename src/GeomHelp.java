@@ -91,5 +91,24 @@ public class GeomHelp {
 
     }
 
+    public static void renderPolygon(ArrayList<Vec> AV, Graphics2D g){
 
+        Polygon p = new Polygon();
+        for (int i = 0; i < AV.size(); i++) {
+            p.addPoint((int) AV.get(i).getX(), (int) AV.get(i).getY());
+        }
+        g.drawPolygon(p);
+
+    }
+
+
+    public static void fillPolygon(ArrayList<Vec> AV, Graphics2D g){
+
+        Polygon p = new Polygon();
+        for (int i = 0; i < AV.size(); i++) {
+            p.addPoint((int) AV.get(i).getX(), (int) AV.get(i).getY());
+        }
+        g.fillPolygon(p);
+
+    }
 }

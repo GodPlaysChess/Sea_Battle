@@ -10,7 +10,7 @@ public class Enemy {
 
 
     Enemy(Vec v) {
-        Ships.add(new Ship(v));
+        Ships.add(new Ship(v, Ship.ENEMY));
     }
 
     public void render(Graphics2D g) {
@@ -23,16 +23,15 @@ public class Enemy {
             Ships.get(i).update();
             if (Ships.get(i).decomposition == 0)
                 Ships.remove(i);
-
         }
 
-        if (Ships.size() < 10 && shipCD<50)
+        if (Ships.size() < 10 && shipCD < 50)
             shipCD++;
     }
 
     public void addShip(Vec v) {
         if (Ships.size() < maxEnemyShips && shipCD == 50) {
-            Ships.add(new Ship(v));
+            Ships.add(new Ship(v ,Ship.ENEMY));
             shipCD = 0;
         }
     }

@@ -5,19 +5,23 @@ public class Turret {
     public final int cooldown; //in millisec
 
     private float fire_angle = 0;
-    public Vec fpos = new Vec(0, 0);                //Vector of the center of the cannon
+    public Vec fpos = new Vec(0, 0);
+                    //Vector of the center of the cannon
+    private Color color;
 
     private int TimeToCD = 1000;
 
-    Turret(Ship s) {
+    Turret(Ship s, Color color) {
         position = s.getPosition();
         cooldown = 5;
+        this.color=color;
 
     }
 
-    Turret(Vec xy, int cd) {   //constructor for elswhere locataed Turrel
+    Turret(Vec xy, int cd, Color color) {   //constructor for elswhere locataed Turrel
         cooldown = cd;
         position.setV(xy);
+        this.color=color;
     }
 
     public void turnLeft() {
@@ -34,8 +38,7 @@ public class Turret {
         g.setColor(Color.DARK_GRAY);
         GeomHelp.fillPolygon((int) fpos.getX(), (int) fpos.getY(), 15, 3, (float) Math.toRadians(fire_angle), g);
 
-
-        g.setColor(Color.BLUE);
+        g.setColor(color);
         GeomHelp.FillCircle((int) position.getX(), (int) position.getY(), 10, g);
     }
 

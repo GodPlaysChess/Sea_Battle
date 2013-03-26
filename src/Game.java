@@ -40,7 +40,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         this.addMouseListener(this);
 
         sea = new Field(800, 500);
-        ship = new Ship(new Vec(500, 350));
+        ship = new Ship(new Vec(500, 350), Ship.PLAYER1);
         enemy = new Enemy(sea.spawnPoint1);
     }
 
@@ -51,17 +51,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         moveBullets();
 
         enemy.addShip(sea.spawnPoint1);
-
-
     }
-
-    public void remove(ObjectOnMap o){
-
-
-
-    }
-
-
 
     public void moveBullets() {
         for (int j = 0; j < Bullets.size(); j++) {
@@ -71,22 +61,29 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         }
     }
 
-
-        private void render_statistics(Graphics2D g) {
-
-            g.setColor(Color.BLACK);
-            g.drawRect(900, 100, 250, 500);
-            //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
-            g.drawString("Your ship position", 980, 150);
-            //g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
-            g.drawString(ship.getPosition().toString(), 1000, 180);
-            g.drawString(ship.ship_turret.fpos.toString(), 1000, 210);
-           // g.drawString(getMousePosition().toString(),310,240);
+    private void resolveCollisions() {
+        for (int i = 0; i < enemy.Ships.size(); i++)
+            if (ship.Collision(enemy.Ships.get(i)))
+                ship.collision_detected = true;
+        ship.moveback();
+    }
 
 
-            // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);
+    private void render_statistics(Graphics2D g) {
 
-        }
+        g.setColor(Color.BLACK);
+        g.drawRect(900, 100, 250, 500);
+        //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
+        g.drawString("Your ship position", 980, 150);
+        //g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
+        g.drawString(ship.getPosition().toString(), 1000, 180);
+        g.drawString(ship.ship_turret.fpos.toString(), 1000, 210);
+        // g.drawString(getMousePosition().toString(),310,240);
+
+
+        // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);
+
+    }
 
     public void display() {
         BufferStrategy bf = this.getBufferStrategy();
@@ -114,19 +111,19 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     }
 
     private void handle_events() {
-        if (!ship.is_destroyed){
-        if (up_pressed)
-            ship.moveStraight();
-        if (left_pressed)
-            ship.turnLeft();
-        if (right_pressed)
-            ship.turnRight();
-        if (fire_pressed)
-            ship.ship_turret.fire();
-        if (a_pressed)
-            ship.ship_turret.turnLeft();
-        if (d_pressed)
-            ship.ship_turret.turnRight();
+        if (!ship.is_destroyed && !ship.collision_detected) {
+            if (up_pressed)
+                ship.moveStraight();
+            if (left_pressed)
+                ship.turnLeft();
+            if (right_pressed)
+                ship.turnRight();
+            if (fire_pressed)
+                ship.ship_turret.fire();
+            if (a_pressed)
+                ship.ship_turret.turnLeft();
+            if (d_pressed)
+                ship.ship_turret.turnRight();
         }
 
     }
