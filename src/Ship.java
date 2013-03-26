@@ -59,7 +59,7 @@ public class Ship extends ObjectOnMap {
         ship_turret.turnRight();
     }
 
-    public boolean Collision(Ship ship) {
+    public boolean Collision(Ship ship) {                          ////!!!!!!!!!! MISTAKE HERE. SOMEHOW SHIP INTERSECTS WITH ITSELF. CHECK TOMORROW
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 return Vec.linesIntersect(Points.get(i), Points.get(i + 1), ship.Points.get(j), ship.Points.get(j + 1));
@@ -97,5 +97,6 @@ public class Ship extends ObjectOnMap {
     public void moveback() {
         position.setV(position_before);
         direction_degrees = direction_degrees_before;
+        collision_detected=false;
     }
 }

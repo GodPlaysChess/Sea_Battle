@@ -48,6 +48,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         handle_events();
         ship.update();
         enemy.update();
+        resolveCollisions();
         moveBullets();
 
         enemy.addShip(sea.spawnPoint1);
