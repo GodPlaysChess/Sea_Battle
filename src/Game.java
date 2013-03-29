@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -48,6 +47,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         handle_events();
         ship.update();
         enemy.update();
+        sea.update();
         resolveCollisions();
         moveBullets();
 
@@ -57,22 +57,17 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     public void moveBullets() {
         for (int j = 0; j < Bullets.size(); j++) {
             Bullets.get(j).move();
-            if (Bullets.get(j).getPos().OutOfBounds(sea.borderX, sea.borderY, sea.sizeX + sea.borderX, sea.sizeY + sea.borderY))
+            if (Bullets.get(j).CheckCollision(sea))
                 Bullets.remove(j);
         }
     }
 
     private void resolveCollisions() {
         for (int i = 0; i < enemy.Ships.size(); i++)
-            if (ship.Collision(enemy.Ships.get(i))) {
-                ship.collision_detected = true;
-                ship.moveback();
-            }
-        for (int i = 0; i< sea.Obst.size();i++)
-            if (ship.Collision(sea.Obst.get(i))){
-                ship.collision_detected = true;
-                ship.moveback();
-            }
+            ship.CollisionCheck(enemy.Ships.get(i));
+
+        for (int i = 0; i < sea.Obst.size(); i++)
+            ship.CollisionCheck(sea.Obst.get(i));
     }
 
 

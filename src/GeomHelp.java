@@ -113,12 +113,16 @@ public class GeomHelp {
         g.fillPolygon(p);
 
     }
-                        /**This method returns transforms an array of RANDOM vertexes (in Vec format
-                         * to the vertexes of GOOD-LOOKING polygon */
 
-     public static ArrayList<Vec> findPolygon(ArrayList<Vec> InputVertexes) {
+    /**
+     * This method returns transforms an array of RANDOM vertexes (in Vec format
+     * to the vertexes of GOOD-LOOKING polygon
+     */
+
+    public static ArrayList<Vec> findPolygon(ArrayList<Vec> InputVertexes) {
         float ymax = 0;
         float ymin = 100000;
+        int index = 0;
         Vec temp = new Vec();
 
         ArrayList<Vec> result = new ArrayList<Vec>();
@@ -140,33 +144,72 @@ public class GeomHelp {
 
         result.add(InputVertexes.get(0));
 
+
         //now for a simplest case we need to find Vector with smallest Y coordinate (in the most cases it will possess higher X coordinate)
         //Looking through whole array and a vector corresponding to the minimum value of Y to temp vector. Then set this vector as a second vertex of the polygon.
         for (int i = 0; i < InputVertexes.size(); i++) {
             ymin = Math.min(ymin, InputVertexes.get(i).getY());
-            if (ymin == InputVertexes.get(i).getY())
+            if (ymin == InputVertexes.get(i).getY()) {
                 temp.setV(InputVertexes.get(i));
+                index = i;
+            }
         }
-        result.add(new Vec(temp));
+        //Now let's insert all useful points between Xmin and Ymin:
+        if (index > 0)
+            for (int i = 1; i <= index; i++) {
+                if (InputVertexes.get(i).getY() <= result.get(result.size() - 1).getY() && InputVertexes.get(i).getY() <= InputVertexes.get(0).getY()) {
+                    result.add(InputVertexes.get(i));
+                }
+            }
+
+        //result.add(new Vec(temp));
+        // Adding points between Ymin and Xmax
+        if (index < InputVertexes.size() - 1)
+            for (int i = index + 1; i <= InputVertexes.size() - 1; i++) {
+                if (InputVertexes.get(i).getY() >= result.get(result.size() - 1).getY() && InputVertexes.get(i).getY() <= InputVertexes.get(InputVertexes.size() - 1).getY()) {
+                    result.add(InputVertexes.get(i));
+                }
+            }
+
+
         //Now the easier procedure with the next(3rd point) (max X, whatever Y), cause our array is already sorted in X:
-        result.add(InputVertexes.get(InputVertexes.size() - 1));
+        // result.add(InputVertexes.get(InputVertexes.size() - 1));
+
+
         //And the last point is (whatever X, Y max). The similar procedure as step 2.
 
         for (int i = 0; i < InputVertexes.size(); i++) {
             ymax = Math.max(ymax, InputVertexes.get(i).getY());
-            if (ymax == InputVertexes.get(i).getY())
+            if (ymax == InputVertexes.get(i).getY()) {
                 temp.setV(InputVertexes.get(i));
+                index = i;
+            }
         }
-        result.add(new Vec(temp));
-
+        // Third quater points:
+        if (index < InputVertexes.size() - 1)
+            for (int i = InputVertexes.size() - 2; i >= index; i--) {
+                if (InputVertexes.get(i).getY() >= InputVertexes.get(InputVertexes.size() - 1).getY()) {
+                    result.add(InputVertexes.get(i));
+                }
+            }
+        //
+        //   result.add(new Vec(temp));
+        //Fourth quater
+        if (index > 0)
+            for (int i = index - 1; i >= 0; i--) {
+                if (InputVertexes.get(i).getY() >= InputVertexes.get(0).getY() && InputVertexes.get(i).getY() <= InputVertexes.get(InputVertexes.size() - 1).getY()) {
+                    result.add(InputVertexes.get(i));
+                }
+            }
         //And finally adding the 5th point to the polygon, to perform lines_intersect search method later
 
-        result.add(InputVertexes.get(0));
+
         return result;
     }
 
-    private Vec findNextPoint(){
-        return ;
-    }
+    /*private Vec findNextPoint() {
+
+        return;
+    } */
 
 }

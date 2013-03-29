@@ -25,8 +25,8 @@ public class Field {
 
     private void addObstacles() {
 
-        Obst.add(new Obstacle(450, 180, 90, 18, Obstacle.CLIFF));
-     //   Obst.add(new Obstacle(250, 480, 0, 10, Obstacle.ISLAND)); /////////////////NEED TO RECHECK AND REBUILD THIS WHOLE THING WITH OSBTACLES CONSTRUCTORES ETC..
+        Obst.add(new Obstacle(450, 180, 90, 4, Obstacle.CLIFF));
+        Obst.add(new Obstacle(250, 480, 50, 20, Obstacle.ISLAND));
     }
 
 
@@ -37,4 +37,9 @@ public class Field {
             Obst.get(i).render(g);
         }
     }
+
+    public void update() {
+          //   checkBulletHit();
+    }
+
 }

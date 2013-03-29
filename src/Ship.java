@@ -68,22 +68,22 @@ public class Ship extends ObjectOnMap {
     // It works, however if i hold one or two buttons I sent more then one move signal between updates,
     // therefore collision is truly detected, but it moves back the ship only by one step, whenever ship has already
     // made 3.  Need to change logic in handling. May be it goes away itself, when I change the control over the ship movement
-    public boolean Collision(Ship ship) {
+    public void CollisionCheck(Ship ship) {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), ship.Points.get(j), ship.Points.get(j + 1)))
-                    return true;
-
-        return false;
+                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), ship.Points.get(j), ship.Points.get(j + 1))) {
+                    collision_detected = true;
+                    moveback();
+                }
     }
 
-    public boolean Collision(Obstacle obstacle) {
+    public void CollisionCheck(Obstacle obstacle) {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < obstacle.Vertexes.size() - 1; j++)
-                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), obstacle.Vertexes.get(j), obstacle.Vertexes.get(j + 1)))
-                    return true;
-        return false;
-
+                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), obstacle.Vertexes.get(j), obstacle.Vertexes.get(j + 1))) {
+                    collision_detected = true;
+                    moveback();
+                }
     }
 
 

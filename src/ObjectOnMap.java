@@ -28,10 +28,10 @@ public class ObjectOnMap {
 
     protected void update() {
         checkBulletHit();
-        decomposition-=dec_speed;
+        decomposition -= dec_speed;
     }
 
-    public boolean checkBulletHit() {
+    private void checkBulletHit() {
         for (int j = Game.Bullets.size() - 1; j >= 0; j--)
             for (int i = 0; i < Points.size() - 1; i++) {
                 if (Vec.linesIntersect(Game.Bullets.get(j).getPos(), Game.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
@@ -41,6 +41,5 @@ public class ObjectOnMap {
                     break;
                 }
             }
-        return false;
     }
 }
