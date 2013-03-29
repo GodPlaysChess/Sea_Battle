@@ -3,6 +3,8 @@ import com.sun.prism.shader.DrawCircle_Color_Loader;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * a simple class, to help process with geometric objects onto the field.
@@ -91,7 +93,7 @@ public class GeomHelp {
 
     }
 
-    public static void renderPolygon(ArrayList<Vec> AV, Graphics2D g){
+    public static void renderPolygon(ArrayList<Vec> AV, Graphics2D g) {
 
         Polygon p = new Polygon();
         for (int i = 0; i < AV.size(); i++) {
@@ -102,7 +104,7 @@ public class GeomHelp {
     }
 
 
-    public static void fillPolygon(ArrayList<Vec> AV, Graphics2D g){
+    public static void fillPolygon(ArrayList<Vec> AV, Graphics2D g) {
 
         Polygon p = new Polygon();
         for (int i = 0; i < AV.size(); i++) {
@@ -111,4 +113,60 @@ public class GeomHelp {
         g.fillPolygon(p);
 
     }
+                        /**This method returns transforms an array of RANDOM vertexes (in Vec format
+                         * to the vertexes of GOOD-LOOKING polygon */
+
+     public static ArrayList<Vec> findPolygon(ArrayList<Vec> InputVertexes) {
+        float ymax = 0;
+        float ymin = 100000;
+        Vec temp = new Vec();
+
+        ArrayList<Vec> result = new ArrayList<Vec>();
+
+
+        Collections.sort(InputVertexes, new Comparator<Vec>() {
+            @Override
+            public int compare(Vec o1, Vec o2) {
+                if (o1.getX() < o2.getX())
+                    return -1;
+                else if (o1.getX() > o2.getX())
+                    return 1;
+                else
+                    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        //Sorting a random vectors in an increasing-X order;
+        //the first point of the polygon is the Xmin point(whatever Y it has)
+
+        result.add(InputVertexes.get(0));
+
+        //now for a simplest case we need to find Vector with smallest Y coordinate (in the most cases it will possess higher X coordinate)
+        //Looking through whole array and a vector corresponding to the minimum value of Y to temp vector. Then set this vector as a second vertex of the polygon.
+        for (int i = 0; i < InputVertexes.size(); i++) {
+            ymin = Math.min(ymin, InputVertexes.get(i).getY());
+            if (ymin == InputVertexes.get(i).getY())
+                temp.setV(InputVertexes.get(i));
+        }
+        result.add(new Vec(temp));
+        //Now the easier procedure with the next(3rd point) (max X, whatever Y), cause our array is already sorted in X:
+        result.add(InputVertexes.get(InputVertexes.size() - 1));
+        //And the last point is (whatever X, Y max). The similar procedure as step 2.
+
+        for (int i = 0; i < InputVertexes.size(); i++) {
+            ymax = Math.max(ymax, InputVertexes.get(i).getY());
+            if (ymax == InputVertexes.get(i).getY())
+                temp.setV(InputVertexes.get(i));
+        }
+        result.add(new Vec(temp));
+
+        //And finally adding the 5th point to the polygon, to perform lines_intersect search method later
+
+        result.add(InputVertexes.get(0));
+        return result;
+    }
+
+    private Vec findNextPoint(){
+        return ;
+    }
+
 }

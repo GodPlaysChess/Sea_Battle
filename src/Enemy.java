@@ -5,7 +5,7 @@ public class Enemy {
 
     ArrayList<Ship> Ships = new ArrayList<Ship>();
     ArrayList<Turret> Turrets = new ArrayList<Turret>();
-    private int maxEnemyShips = 10;
+    private int maxEnemyShips = 1;
     private int shipCD = 50;
 
 
@@ -35,6 +35,11 @@ public class Enemy {
             shipCD = 0;
         }
     }
+
+    public void move(){
+
+    }
+
 
 
 }

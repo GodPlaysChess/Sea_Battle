@@ -4,6 +4,15 @@ public class Vec {
     private float x;
     private float y;
 
+    Vec() {
+        x = 0;
+        y = 0;
+    }
+
+    Vec(Vec v){
+        setV(v);
+    }
+
     Vec(float x, float y) {
         this.x = x;
         this.y = y;
@@ -35,9 +44,22 @@ public class Vec {
         x = b;
     }
 
+    public int compareTo(Vec v) {
+        if (x > v.getX())
+            return 1;
+        else if (x < getX())
+            return -1;
+        else return 0;
+    }
+
     public void setV(Vec v) {
         x = v.getX();
         y = v.getY();
+    }
+
+    public void setV(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
     public float length() {
@@ -63,35 +85,36 @@ public class Vec {
         y = getY() + v.getY();
     }
 
-    public Vec addReturn (Vec v){
-        return new Vec(getX()+v.getX(), getY()+v.getY());
+    public Vec addReturn(Vec v) {
+        return new Vec(getX() + v.getX(), getY() + v.getY());
     }
 
-    public Vec subReturn(Vec v){
-        return new Vec(getX()-v.getX(), getY()-v.getY());
+    public Vec subReturn(Vec v) {
+        return new Vec(getX() - v.getX(), getY() - v.getY());
     }
 
     public void multiply(float a) {
-        x = getX()*a;
-        y = getY()*a;
+        x = getX() * a;
+        y = getY() * a;
     }
 
     public Vec multiplied(float a) {
-        return new Vec(getX()*a, getY()*a);
+        return new Vec(getX() * a, getY() * a);
     }
 
-    public float getAngle(){
-        return(-(float)Math.atan(getY()/getX()));
+    public float getAngle() {
+        return (-(float) Math.atan(getY() / getX()));
     }
 
     public Vec normalize() {
         return new Vec(getX() / length(), getY() / length());
     }
 
-    public void turn(float a)/**in DEG*/{
-        float alpha = (float)Math.toRadians(a);
-        x = (float)(getX()*Math.cos(alpha)+getY()*Math.sin(alpha));
-        y = (float)(-getX()*Math.sin(alpha)+getY()*Math.cos(alpha));
+    public void turn(float a)/**in DEG*/
+    {
+        float alpha = (float) Math.toRadians(a);
+        x = (float) (getX() * Math.cos(alpha) + getY() * Math.sin(alpha));
+        y = (float) (-getX() * Math.sin(alpha) + getY() * Math.cos(alpha));
 
     }
 
@@ -101,8 +124,8 @@ public class Vec {
         else return true;
     }
 
-    public String toString(){
-        return (getX() + " , " +getY());
+    public String toString() {
+        return (getX() + " , " + getY());
     }
 
     static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
@@ -112,5 +135,6 @@ public class Vec {
 
         return (a > 0 && a < 1 && b > 0 && b < 1);
     }
+
 
 }

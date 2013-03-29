@@ -3,6 +3,9 @@ import java.awt.*;
 public class Ship extends ObjectOnMap {
 
 
+    private Vec increment_position = new Vec();
+    private int increment_direction_degrees = 0;
+
     private int direction_degrees;
     private int direction_degrees_before;
     private int length;
@@ -33,6 +36,7 @@ public class Ship extends ObjectOnMap {
     }
 
     public void update() {
+        move();
         super.update();
         ship_turret.setPosition(position);
         ship_turret.fpos.setV(ship_turret.getPosition().addReturn(ship_turret.getFire_direction().multiplied(10)));
@@ -42,30 +46,46 @@ public class Ship extends ObjectOnMap {
     }
 
     public void moveStraight() {
-        //position.add(velocity * (float) (Math.cos(Math.toRadians(direction_degrees))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
-        Vec increment_position = new Vec(velocity * (float) (Math.cos(Math.toRadians(direction_degrees))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
-        move(increment_position, 0);
+
+        //Vec increment_position = new Vec(velocity * (float) (Math.cos(Math.toRadians(direction_degrees))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
+        increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
+        //move(increment_position, 0);
     }
 
     public void turnLeft() {
-        //direction_degrees += 5;
-        move(new Vec(0,0), 5);
+
+        increment_direction_degrees = 5;
+        //move(new Vec(0, 0), 5);
         ship_turret.turnLeft();
     }
 
     public void turnRight() {
-        //direction_degrees -= 5;
-        move(new Vec(0,0), -5);
+        increment_direction_degrees -= 5;
+        //move(new Vec(0, 0), -5);
         ship_turret.turnRight();
     }
 
-    public boolean Collision(Ship ship) {                          ////!!!!!!!!!! MISTAKE HERE. SOMEHOW SHIP INTERSECTS WITH ITSELF. CHECK TOMORROW
+    // It works, however if i hold one or two buttons I sent more then one move signal between updates,
+    // therefore collision is truly detected, but it moves back the ship only by one step, whenever ship has already
+    // made 3.  Need to change logic in handling. May be it goes away itself, when I change the control over the ship movement
+    public boolean Collision(Ship ship) {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                return Vec.linesIntersect(Points.get(i), Points.get(i + 1), ship.Points.get(j), ship.Points.get(j + 1));
+                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), ship.Points.get(j), ship.Points.get(j + 1)))
+                    return true;
 
         return false;
     }
+
+    public boolean Collision(Obstacle obstacle) {
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < obstacle.Vertexes.size() - 1; j++)
+                if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), obstacle.Vertexes.get(j), obstacle.Vertexes.get(j + 1)))
+                    return true;
+        return false;
+
+    }
+
 
     public void render(Graphics2D g) {
         if (!is_destroyed) {
@@ -89,14 +109,30 @@ public class Ship extends ObjectOnMap {
 
     private void move(Vec increment_position, int increment_direction_degrees) {
         position_before.setV(position);
-        position.add(increment_position);
         direction_degrees_before = direction_degrees;
+
+        position.add(increment_position);
         direction_degrees += increment_direction_degrees;
+
+
+    }
+
+    private void move() {
+        position_before.setV(position);
+        direction_degrees_before = direction_degrees;
+
+        position.add(increment_position);
+        direction_degrees += increment_direction_degrees;
+
+
+        increment_position.setV(0, 0);
+        increment_direction_degrees = 0;
     }
 
     public void moveback() {
         position.setV(position_before);
         direction_degrees = direction_degrees_before;
-        collision_detected=false;
+        collision_detected = false;
     }
+
 }

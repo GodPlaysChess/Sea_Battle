@@ -23,7 +23,7 @@ public class ObjectOnMap {
     }
 
     private void decompositionStart() {
-        dec_speed = 10;
+        dec_speed = 5;
     }
 
     protected void update() {

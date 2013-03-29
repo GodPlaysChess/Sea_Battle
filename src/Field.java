@@ -13,7 +13,7 @@ public class Field {
     public final Vec spawnPoint1 = new Vec(borderX + 50, borderY + 50);
     private Vec spwanPoint2 = new Vec(00, 0);
 
-    private ArrayList<Obstacle> Obst = new ArrayList();
+    public ArrayList<Obstacle> Obst = new ArrayList();
 
 
     Field(int sizeX, int sizeY) {
@@ -26,6 +26,7 @@ public class Field {
     private void addObstacles() {
 
         Obst.add(new Obstacle(450, 180, 90, 18, Obstacle.CLIFF));
+     //   Obst.add(new Obstacle(250, 480, 0, 10, Obstacle.ISLAND)); /////////////////NEED TO RECHECK AND REBUILD THIS WHOLE THING WITH OSBTACLES CONSTRUCTORES ETC..
     }
 
 

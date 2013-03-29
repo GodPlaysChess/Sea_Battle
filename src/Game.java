@@ -64,9 +64,15 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
     private void resolveCollisions() {
         for (int i = 0; i < enemy.Ships.size(); i++)
-            if (ship.Collision(enemy.Ships.get(i)))
+            if (ship.Collision(enemy.Ships.get(i))) {
                 ship.collision_detected = true;
-        ship.moveback();
+                ship.moveback();
+            }
+        for (int i = 0; i< sea.Obst.size();i++)
+            if (ship.Collision(sea.Obst.get(i))){
+                ship.collision_detected = true;
+                ship.moveback();
+            }
     }
 
 
