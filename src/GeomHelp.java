@@ -127,6 +127,7 @@ public class GeomHelp {
 
         ArrayList<Vec> result = new ArrayList<Vec>();
 
+        //Sorting a random vectors in an increasing-X order;
 
         Collections.sort(InputVertexes, new Comparator<Vec>() {
             @Override
@@ -136,28 +137,31 @@ public class GeomHelp {
                 else if (o1.getX() > o2.getX())
                     return 1;
                 else
-                    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+                    return 0;
             }
         });
-        //Sorting a random vectors in an increasing-X order;
+
+        //now for a simplest case we need to find Vector with smallest Y coordinate (in the most cases it will possess higher X coordinate)
+        //Looking through whole array and a vector corresponding to the minimum value of Y to temp vector. Then set this vector as a second vertex of the polygon.
+
+            for (int i = 0; i < InputVertexes.size(); i++) {
+                ymin = Math.min(ymin, InputVertexes.get(i).getY());
+                if (ymin == InputVertexes.get(i).getY())
+                    index = i;
+            }
+
+
+        // Now checking that Ymin != Xmin
+
+
         //the first point of the polygon is the Xmin point(whatever Y it has)
 
         result.add(InputVertexes.get(0));
 
-
-        //now for a simplest case we need to find Vector with smallest Y coordinate (in the most cases it will possess higher X coordinate)
-        //Looking through whole array and a vector corresponding to the minimum value of Y to temp vector. Then set this vector as a second vertex of the polygon.
-        for (int i = 0; i < InputVertexes.size(); i++) {
-            ymin = Math.min(ymin, InputVertexes.get(i).getY());
-            if (ymin == InputVertexes.get(i).getY()) {
-                temp.setV(InputVertexes.get(i));
-                index = i;
-            }
-        }
         //Now let's insert all useful points between Xmin and Ymin:
         if (index > 0)
             for (int i = 1; i <= index; i++) {
-                if (InputVertexes.get(i).getY() <= result.get(result.size() - 1).getY() && InputVertexes.get(i).getY() <= InputVertexes.get(0).getY()) {
+                if (InputVertexes.get(i).getY() <= result.get(result.size() - 1).getY()) {
                     result.add(InputVertexes.get(i));
                 }
             }
@@ -178,17 +182,18 @@ public class GeomHelp {
 
         //And the last point is (whatever X, Y max). The similar procedure as step 2.
 
-        for (int i = 0; i < InputVertexes.size(); i++) {
-            ymax = Math.max(ymax, InputVertexes.get(i).getY());
-            if (ymax == InputVertexes.get(i).getY()) {
-                temp.setV(InputVertexes.get(i));
-                index = i;
+            for (int i = 0; i < InputVertexes.size(); i++) {
+                ymax = Math.max(ymax, InputVertexes.get(i).getY());
+                if (ymax == InputVertexes.get(i).getY())
+                    index = i;
             }
-        }
+
+
+
         // Third quater points:
         if (index < InputVertexes.size() - 1)
             for (int i = InputVertexes.size() - 2; i >= index; i--) {
-                if (InputVertexes.get(i).getY() >= InputVertexes.get(InputVertexes.size() - 1).getY()) {
+                if (InputVertexes.get(i).getY() >= result.get(result.size() - 1).getY()) {
                     result.add(InputVertexes.get(i));
                 }
             }
@@ -197,7 +202,7 @@ public class GeomHelp {
         //Fourth quater
         if (index > 0)
             for (int i = index - 1; i >= 0; i--) {
-                if (InputVertexes.get(i).getY() >= InputVertexes.get(0).getY() && InputVertexes.get(i).getY() <= InputVertexes.get(InputVertexes.size() - 1).getY()) {
+                if (InputVertexes.get(i).getY() >= InputVertexes.get(0).getY() && InputVertexes.get(i).getY() <= result.get(result.size() - 1).getY()) {
                     result.add(InputVertexes.get(i));
                 }
             }

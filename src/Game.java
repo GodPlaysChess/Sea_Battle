@@ -15,7 +15,9 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
     private Enemy enemy = null;
 
-    static ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
+    public static ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
+    public static Vec MyShipPosition = new Vec();
+
 
     private boolean up_pressed = false;
     private boolean down_pressed = false;
@@ -40,13 +42,16 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
         sea = new Field(800, 500);
         ship = new Ship(new Vec(500, 350), Ship.PLAYER1);
+        MyShipPosition = ship.position;
         enemy = new Enemy(sea.spawnPoint1);
     }
 
     public void update() {
         handle_events();
         ship.update();
+
         enemy.update();
+        enemy.move(); // AI HERE . later move it to update
         sea.update();
         resolveCollisions();
         moveBullets();
@@ -77,9 +82,9 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         g.drawRect(900, 100, 250, 500);
         //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
         g.drawString("Your ship position", 980, 150);
-        //g.drawString(enemy.Ships.get(0).getPosition().toString(), 910, 180);
+        g.drawString(String.valueOf(enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
         g.drawString(ship.getPosition().toString(), 1000, 180);
-        g.drawString(ship.ship_turret.fpos.toString(), 1000, 210);
+        g.drawString(ship.ship_turret.getFire_direction().toString(), 1000, 210);
         // g.drawString(getMousePosition().toString(),310,240);
 
 

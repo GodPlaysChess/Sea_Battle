@@ -9,7 +9,7 @@ public class Vec {
         y = 0;
     }
 
-    Vec(Vec v){
+    Vec(Vec v) {
         setV(v);
     }
 
@@ -89,6 +89,10 @@ public class Vec {
         return new Vec(getX() + v.getX(), getY() + v.getY());
     }
 
+    public Vec addReturn(float a, float b) {
+        return new Vec(getX() + a, getY() + b);
+    }
+
     public Vec subReturn(Vec v) {
         return new Vec(getX() - v.getX(), getY() - v.getY());
     }
@@ -102,11 +106,13 @@ public class Vec {
         return new Vec(getX() * a, getY() * a);
     }
 
-    public float getAngle() {
-        return (-(float) Math.atan(getY() / getX()));
+    public double getAngle() {                   //in Rads
+        if (getX() > 0) return (-Math.atan(getY() / getX()));
+        else return (-Math.atan(getY() / getX()) + Math.PI);
     }
 
     public Vec normalize() {
+
         return new Vec(getX() / length(), getY() / length());
     }
 

@@ -32,7 +32,7 @@ public class Obstacle {
         if (type == ISLAND) {
             g.setColor(Color.GREEN);
             ArrayList<Vec> VertForrender = new ArrayList<Vec>(Vertexes);
-            VertForrender.remove(VertForrender.size()-1);
+            VertForrender.remove(VertForrender.size() - 1);
             GeomHelp.fillPolygon(VertForrender, g);
         }
         if (type == CLIFF) {

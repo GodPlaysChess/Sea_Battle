@@ -7,7 +7,7 @@ public class Bullet {
     private Vec velocity = new Vec(0, 0);
 
     Bullet(Vec p, Vec v) {
-        velocity.setV(v.normalize().multiplied(50));
+        velocity.setV(v.normalize().multiplied(5));
         position.setV(p);
     }
 

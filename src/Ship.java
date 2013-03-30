@@ -65,9 +65,7 @@ public class Ship extends ObjectOnMap {
         ship_turret.turnRight();
     }
 
-    // It works, however if i hold one or two buttons I sent more then one move signal between updates,
-    // therefore collision is truly detected, but it moves back the ship only by one step, whenever ship has already
-    // made 3.  Need to change logic in handling. May be it goes away itself, when I change the control over the ship movement
+
     public void CollisionCheck(Ship ship) {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
@@ -85,7 +83,6 @@ public class Ship extends ObjectOnMap {
                     moveback();
                 }
     }
-
 
     public void render(Graphics2D g) {
         if (!is_destroyed) {
@@ -113,8 +110,6 @@ public class Ship extends ObjectOnMap {
 
         position.add(increment_position);
         direction_degrees += increment_direction_degrees;
-
-
     }
 
     private void move() {
@@ -134,5 +129,6 @@ public class Ship extends ObjectOnMap {
         direction_degrees = direction_degrees_before;
         collision_detected = false;
     }
+
 
 }

@@ -6,7 +6,7 @@ public class Turret {
 
     private float fire_angle = 0;
     public Vec fpos = new Vec(0, 0);
-                    //Vector of the center of the cannon
+    //Vector of the center of the cannon
     private Color color;
 
     private int TimeToCD = 1000;
@@ -14,14 +14,14 @@ public class Turret {
     Turret(Ship s, Color color) {
         position = s.getPosition();
         cooldown = 5;
-        this.color=color;
+        this.color = color;
 
     }
 
     Turret(Vec xy, int cd, Color color) {   //constructor for elswhere locataed Turrel
         cooldown = cd;
         position.setV(xy);
-        this.color=color;
+        this.color = color;
     }
 
     public void turnLeft() {
@@ -63,9 +63,25 @@ public class Turret {
         }
     }
 
+    public void takeAim(Vec aim_position) {
+        double target_fire_angle = aim_position.subReturn(position).getAngle();  //target angle in radians
+        if (target_fire_angle - Math.toRadians(fire_angle) > 0.05)
+            turnLeft();
+        else if (target_fire_angle - Math.toRadians(fire_angle) < -0.05)
+            turnRight();
+        else fire();
+
+        System.out.println((int)Math.toDegrees(target_fire_angle));
+
+
+    }
+
     public void incTimeToCD() {
         TimeToCD++;
     }
 
+    public float getFireAngle(){
+        return fire_angle;
+    }
 
 }

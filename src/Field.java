@@ -25,8 +25,8 @@ public class Field {
 
     private void addObstacles() {
 
-        Obst.add(new Obstacle(450, 180, 90, 4, Obstacle.CLIFF));
-        Obst.add(new Obstacle(250, 480, 50, 20, Obstacle.ISLAND));
+        Obst.add(new Obstacle(450, 180, 90, 60, Obstacle.CLIFF));
+        Obst.add(new Obstacle(250, 480, 50, 80, Obstacle.ISLAND));
     }
 
 
@@ -39,7 +39,7 @@ public class Field {
     }
 
     public void update() {
-          //   checkBulletHit();
+        //   checkBulletHit();
     }
 
 }
