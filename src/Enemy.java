@@ -40,34 +40,17 @@ public class Enemy {
     }
 
     public void analyze() {
-        findShip();
+
     }
 
     public void move(){
         for (int i = 0; i < Ships.size(); i++){
-            Ships.get(i).ship_turret.takeAim(Game.MyShipPosition);
-           // Ships.get(i).ship_turret.fire();
+            Ships.get(i).AImove();
+            Ships.get(i).ship_turret.AItakeAim(Game.MyShipPosition);
+
         }
     }
 
-    public float checkDistance(Ship ship1, Ship ship2) {
-        return ship1.position.distance(ship2.position);
-    }
-
-
-    public boolean CouldHit(Ship ship1, Ship ship2) {
-        //check if turret
-        return false;
-    }
-
-    public void takeAim(Ship MyShip) {
-        //could find only if "can see"
-    }
-
-
-    public void findShip() {
-        // if no ship on lines, than search
-    }
 }
 
 

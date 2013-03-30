@@ -131,4 +131,42 @@ public class Ship extends ObjectOnMap {
     }
 
 
+    public void AImoveToTarget(Vec target_position){
+        increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
+        double target_angle = target_position.subReturn(position).getAngle();  //target angle in radians
+        if (target_angle - Math.toRadians(direction_degrees) > 0.05)
+            turnLeft();
+        else if (target_angle - Math.toRadians(direction_degrees) < -0.05)
+            turnRight();
+        move();
+
+    }
+
+
+    public void AImove(){
+        if (AIcalculateDistance()>120)
+            AImoveToTarget(Game.MyShipPosition);
+    }
+
+    public boolean AIDetect(){
+        //invisible bullet check
+        return false;
+    }
+
+
+
+
+
+
+
+    public float AIcalculateDistance(){
+        return position.distance(Game.MyShipPosition);
+    }
+
+    public void AIfindShip() {
+        // if no ship on lines, than search
+    }
+
+
+
 }

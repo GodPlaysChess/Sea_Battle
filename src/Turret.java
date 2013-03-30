@@ -59,11 +59,12 @@ public class Turret {
         if (TimeToCD > cooldown) {
             TimeToCD = 0;
             Game.Bullets.add(new Bullet(fpos.addReturn(getFire_direction().multiplied(16)), getFire_direction()));   // was Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));
-            //System.out.println(Game.Bullets.get(0).getPos().toString());
         }
     }
 
-    public void takeAim(Vec aim_position) {
+
+    public void AItakeAim(Vec aim_position) {
+
         double target_fire_angle = aim_position.subReturn(position).getAngle();  //target angle in radians
         if (target_fire_angle - Math.toRadians(fire_angle) > 0.05)
             turnLeft();
@@ -73,8 +74,9 @@ public class Turret {
 
         System.out.println((int)Math.toDegrees(target_fire_angle));
 
-
+        //Probably make boolean and return true if aimed, and false otherwise;
     }
+
 
     public void incTimeToCD() {
         TimeToCD++;
