@@ -32,12 +32,12 @@ public class ObjectOnMap {
     }
 
     private void checkBulletHit() {
-        for (int j = Game.Bullets.size() - 1; j >= 0; j--)
+        for (int j = GameData.Bullets.size() - 1; j >= 0; j--)
             for (int i = 0; i < Points.size() - 1; i++) {
-                if (Vec.linesIntersect(Game.Bullets.get(j).getPos(), Game.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
+                if (Vec.linesIntersect(GameData.Bullets.get(j).getPos(), GameData.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
                     System.out.println("HIT");
                     destroy();
-                    Game.Bullets.remove(j);
+                    GameData.Bullets.remove(j);
                     break;
                 }
             }

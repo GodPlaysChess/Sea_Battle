@@ -6,6 +6,7 @@ public class Obstacle {
 
     private int type;
     private Vec position = new Vec(0, 0);
+    private int size;
 
     public final static int CLIFF = 1;
     public final static int ISLAND = 2;
@@ -18,6 +19,7 @@ public class Obstacle {
 
 
     Obstacle(int xpos, int ypos, int size, int num_vertexes, int type) {
+        this.size = size;
         this.type = type;
         position.setV(xpos, ypos);
         ArrayList<Vec> TempVertexes = new ArrayList<Vec>();
@@ -26,6 +28,14 @@ public class Obstacle {
         }
         Vertexes = new ArrayList<Vec>(GeomHelp.findPolygon(TempVertexes));
         Vertexes.add(Vertexes.get(0));
+    }
+
+    public int getSize(){
+        return size;
+    }
+
+    public Vec getPosition(){
+        return position;
     }
 
     public void render(Graphics2D g) {

@@ -12,7 +12,8 @@ public class Turret {
     private int TimeToCD = 1000;
 
     Turret(Ship s, Color color) {
-        position = s.getPosition();
+       // position = s.getPosition();
+        position=s.position;                                           //The same vector as the corresponding ship position
         cooldown = 5;
         this.color = color;
 
@@ -25,16 +26,14 @@ public class Turret {
     }
 
     public void turnLeft() {
-        fire_angle += 5; //spin on +5degrees
-
+        fire_angle += 5; //turn on +5degrees
     }
 
     public void turnRight() {
-        fire_angle -= 5; //spin on +5degrees
+        fire_angle -= 5; //turn on -5degrees
     }
 
     public void render(Graphics2D g) {
-
         g.setColor(Color.DARK_GRAY);
         GeomHelp.fillPolygon((int) fpos.getX(), (int) fpos.getY(), 15, 3, (float) Math.toRadians(fire_angle), g);
 
@@ -58,7 +57,7 @@ public class Turret {
     public void fire() {
         if (TimeToCD > cooldown) {
             TimeToCD = 0;
-            Game.Bullets.add(new Bullet(fpos.addReturn(getFire_direction().multiplied(16)), getFire_direction()));   // was Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));
+            GameData.Bullets.add(new Bullet(fpos.addReturn(getFire_direction().multiplied(16)), getFire_direction()));   // was Game.Bullets.add(new Bullet(getPosition().addReturn(getFire_direction().multiplied(30)), getFire_direction()));
         }
     }
 
@@ -86,4 +85,10 @@ public class Turret {
         return fire_angle;
     }
 
+                      //moves turret along with the ship
+    public void update(){
+        //setPosition(s.position);
+        fpos.setV(getPosition().addReturn(getFire_direction().multiplied(10)));
+        incTimeToCD();
+    }
 }

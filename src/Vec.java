@@ -70,6 +70,15 @@ public class Vec {
         return ((float) Math.sqrt((v.getX() - x) * (v.getX() - x) + (v.getY() - y) * (v.getY() - y)));
     }
 
+    public float distance(Vec v1, Vec v2){
+        float s1, s2, s3;
+        s1 = this.subReturn(v1).length();
+        s2 = this.subReturn(v2).length();
+        s3 = v2.subReturn(v1).length();
+
+        return (float)(Math.sqrt(s2*s2-(s2*s2-s3*s3-s1*s1)*(s2*s2-s3*s3-s1*s1)/(4*s3*s3)));
+    }
+
     public void add(float a) {
         x = getX() + a;
         y = getY() + a;

@@ -38,30 +38,23 @@ public class Ship extends ObjectOnMap {
     public void update() {
         move();
         super.update();
-        ship_turret.setPosition(position);
-        ship_turret.fpos.setV(ship_turret.getPosition().addReturn(ship_turret.getFire_direction().multiplied(10)));
-        ship_turret.incTimeToCD();
-
+        ship_turret.update();
         Points = GeomHelp.findPolygon(position.getX(), position.getY(), length, width, (float) Math.toRadians(direction_degrees));
     }
 
-    public void moveStraight() {
 
-        //Vec increment_position = new Vec(velocity * (float) (Math.cos(Math.toRadians(direction_degrees))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
+    public void moveStraight() {
         increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
-        //move(increment_position, 0);
+
     }
 
     public void turnLeft() {
-
         increment_direction_degrees = 5;
-        //move(new Vec(0, 0), 5);
         ship_turret.turnLeft();
     }
 
     public void turnRight() {
         increment_direction_degrees -= 5;
-        //move(new Vec(0, 0), -5);
         ship_turret.turnRight();
     }
 
@@ -112,61 +105,87 @@ public class Ship extends ObjectOnMap {
         direction_degrees += increment_direction_degrees;
     }
 
-    private void move() {
+    protected void move() {
         position_before.setV(position);
         direction_degrees_before = direction_degrees;
 
         position.add(increment_position);
         direction_degrees += increment_direction_degrees;
 
-
         increment_position.setV(0, 0);
         increment_direction_degrees = 0;
     }
 
-    public void moveback() {
+    protected void moveback() {
         position.setV(position_before);
         direction_degrees = direction_degrees_before;
         collision_detected = false;
     }
 
 
-    public void AImoveToTarget(Vec target_position){
-        increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
-        double target_angle = target_position.subReturn(position).getAngle();  //target angle in radians
-        if (target_angle - Math.toRadians(direction_degrees) > 0.05)
-            turnLeft();
-        else if (target_angle - Math.toRadians(direction_degrees) < -0.05)
-            turnRight();
-        move();
-
+    public void AImoveToTarget(Vec target_position) {
+        if (AIcheckPath(target_position)) {
+            increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
+            double target_angle = target_position.subReturn(position).getAngle();  //target angle in radians
+            if (target_angle - Math.toRadians(direction_degrees) > 0.05)
+                turnLeft();
+            else if (target_angle - Math.toRadians(direction_degrees) < -0.05)
+                turnRight();
+            move();
+        }
     }
 
 
-    public void AImove(){
-        if (AIcalculateDistance()>120)
-            AImoveToTarget(Game.MyShipPosition);
+    public void AImove() {
+        if (!AIDetectMe())
+            AIfindShip();
+        else if (AIDetectMe()) {
+            ship_turret.AItakeAim(GameData.MyShipPosition);
+            if (AIcalculateDistance() > 120)
+                AImoveToTarget(GameData.MyShipPosition);
+        }
     }
 
-    public boolean AIDetect(){
-        //invisible bullet check
+    public boolean AIDetectMe() {
+        for (int i = 0; i < GameData.sea.Obst.size(); i++)
+            for (int j = 0; j < GameData.sea.Obst.get(i).Vertexes.size() - 1; j++)
+                if (Vec.linesIntersect(position, GameData.MyShipPosition, GameData.sea.Obst.get(i).Vertexes.get(j), GameData.sea.Obst.get(i).Vertexes.get(j + 1)))
+                    return false;
+        return true;
+    }
+
+
+    public float AIcalculateDistance() {
+        return position.distance(GameData.MyShipPosition);
+    }
+
+
+    public boolean AIcheckPath(Vec destination) {
+        for (int i = 0; i < GameData.sea.Obst.size(); i++)
+            for (int j = 0; j < GameData.sea.Obst.get(i).Vertexes.size() - 1; j++)
+                if (Vec.linesIntersect(position, destination, GameData.sea.Obst.get(i).Vertexes.get(j), GameData.sea.Obst.get(i).Vertexes.get(j + 1)))
+                    return false;
+        return true;
+    }
+
+    public void AIpatrol(Obstacle O) {
+        //to find my ship it floats around the obstacles one by one.
+
+        // first get the positions.
+    }
+
+    public boolean AIcheckShore() {
+        for (int i = 0; i < GameData.sea.Obst.size(); i++)
+            for (int j = 0; j < GameData.sea.Obst.get(i).Vertexes.size() - 1; j++)
+                if (position.distance(GameData.sea.Obst.get(i).Vertexes.get(j), GameData.sea.Obst.get(i).Vertexes.get(j + 1)) < 50)
+                    return true;
+
         return false;
     }
 
-
-
-
-
-
-
-    public float AIcalculateDistance(){
-        return position.distance(Game.MyShipPosition);
-    }
-
     public void AIfindShip() {
-        // if no ship on lines, than search
+        AImoveToTarget(GameData.sea.Obst.get(0).getPosition().addReturn(GameData.sea.Obst.get(0).getSize(), GameData.sea.Obst.get(0).getSize()));   //Very bad. make it good
+
     }
-
-
 
 }

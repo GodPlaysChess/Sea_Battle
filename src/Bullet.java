@@ -28,7 +28,7 @@ public class Bullet {
         if (!invisible)
             return (getPos().addReturn(velocity));
         else
-            return (Game.MyShipPosition);
+            return (GameData.MyShipPosition);
     }
 
     public void render(Graphics2D g) {
@@ -42,13 +42,13 @@ public class Bullet {
     }
 
 
-    public boolean CheckCollision(Field sea) {
-        if (getPos().OutOfBounds(sea.borderX, sea.borderY, sea.sizeX + sea.borderX, sea.sizeY + sea.borderY))
+    public boolean CheckCollision() {
+        if (getPos().OutOfBounds(GameData.sea.borderX, GameData.sea.borderY, GameData.sea.sizeX + GameData.sea.borderX, GameData.sea.sizeY + GameData.sea.borderY))
             return true;
 
-        for (int i = 0; i < sea.Obst.size(); i++) {
-            for (int k = 0; k < sea.Obst.get(i).Vertexes.size() - 1; k++)
-                if (Vec.linesIntersect(getPos(), getNextPos(), sea.Obst.get(i).Vertexes.get(k), sea.Obst.get(i).Vertexes.get(k + 1)))
+        for (int i = 0; i < GameData.sea.Obst.size(); i++) {
+            for (int k = 0; k < GameData.sea.Obst.get(i).Vertexes.size() - 1; k++)
+                if (Vec.linesIntersect(getPos(), getNextPos(), GameData.sea.Obst.get(i).Vertexes.get(k), GameData.sea.Obst.get(i).Vertexes.get(k + 1)))
                     return true;
         }
 

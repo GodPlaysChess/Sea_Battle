@@ -30,8 +30,6 @@ public class Enemy {
 
     }
 
-
-
     public void addShip(Vec v) {
         if (Ships.size() < maxEnemyShips && shipCD == 50) {
             Ships.add(new Ship(v, Ship.ENEMY));
@@ -39,14 +37,10 @@ public class Enemy {
         }
     }
 
-    public void analyze() {
-
-    }
-
     public void move(){
         for (int i = 0; i < Ships.size(); i++){
             Ships.get(i).AImove();
-            Ships.get(i).ship_turret.AItakeAim(Game.MyShipPosition);
+
 
         }
     }

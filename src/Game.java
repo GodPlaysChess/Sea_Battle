@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Game extends JFrame implements KeyListener, MouseListener {
 
-
+  /*
     private Ship ship = null;
     private Field sea = null;
 
@@ -17,7 +17,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
     public static ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
     public static Vec MyShipPosition = new Vec();
-
+*/
 
     private boolean up_pressed = false;
     private boolean down_pressed = false;
@@ -40,42 +40,46 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         this.addKeyListener(this);
         this.addMouseListener(this);
 
+        //GameData game = new GameData();
+
+        /*
         sea = new Field(800, 500);
         ship = new Ship(new Vec(500, 350), Ship.PLAYER1);
         MyShipPosition = ship.position;
-        enemy = new Enemy(sea.spawnPoint1);
+        enemy = new Enemy(sea.spawnPoint1);*/
     }
 
     public void update() {
         handle_events();
-        ship.update();
+        GameData.myShip.update();
 
-        enemy.update();
-        enemy.move(); // AI HERE . later move it to update
-        sea.update();
+        GameData.enemy.update();
+        GameData.enemy.move(); // AI HERE . later move it to update
+        GameData.sea.update();
+
         resolveCollisions();
         moveBullets();
 
-        enemy.addShip(sea.spawnPoint1);
+        GameData.enemy.addShip(GameData.sea.spawnPoint1);
     }
 
     public void moveBullets() {
-        for (int j = 0; j < Bullets.size(); j++) {
-            Bullets.get(j).move();
-            if (Bullets.get(j).CheckCollision(sea))
-                Bullets.remove(j);
+        for (int j = 0; j < GameData.Bullets.size(); j++) {
+            GameData.Bullets.get(j).move();
+            if (GameData.Bullets.get(j).CheckCollision())
+                GameData.Bullets.remove(j);
         }
     }
 
     private void resolveCollisions() {
-        for (int i = 0; i < enemy.Ships.size(); i++)
-            ship.CollisionCheck(enemy.Ships.get(i));
+        for (int i = 0; i < GameData.enemy.Ships.size(); i++)
+            GameData.myShip.CollisionCheck(GameData.enemy.Ships.get(i));
 
         //Colliions with obstales
-        for (int i = 0; i < sea.Obst.size(); i++){
-            ship.CollisionCheck(sea.Obst.get(i));                      //My Ship
-            for (int j = 0; j < enemy.Ships.size(); j++)                        //Enemy Ships
-                enemy.Ships.get(j).CollisionCheck(sea.Obst.get(i));
+        for (int i = 0; i < GameData.sea.Obst.size(); i++){
+            GameData.myShip.CollisionCheck(GameData.sea.Obst.get(i));                      //My Ship
+            for (int j = 0; j < GameData.enemy.Ships.size(); j++)                        //Enemy Ships
+                GameData.enemy.Ships.get(j).CollisionCheck(GameData.sea.Obst.get(i));
         }
     }
 
@@ -86,9 +90,9 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         g.drawRect(900, 100, 250, 500);
         //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
         g.drawString("Your ship position", 980, 150);
-        g.drawString(String.valueOf(enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
-        g.drawString(ship.getPosition().toString(), 1000, 180);
-        g.drawString(ship.ship_turret.getFire_direction().toString(), 1000, 210);
+        g.drawString(String.valueOf(GameData.enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
+        g.drawString(GameData.myShip.getPosition().toString(), 1000, 180);
+        g.drawString(GameData.myShip.ship_turret.getFire_direction().toString(), 1000, 210);
         // g.drawString(getMousePosition().toString(),310,240);
 
 
@@ -103,13 +107,13 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         try {
             g = (Graphics2D) bf.getDrawGraphics();
             g.clearRect(0, 0, 1224, 768);
-            sea.render(g);
-            ship.render(g);
-            enemy.render(g);
+            GameData.sea.render(g);
+            GameData.myShip.render(g);
+            GameData.enemy.render(g);
             render_statistics(g);
 
-            for (int j = 0; j < Bullets.size(); j++) {
-                Bullets.get(j).render(g);
+            for (int j = 0; j < GameData.Bullets.size(); j++) {
+                GameData.Bullets.get(j).render(g);
             }
 
         } finally {
@@ -122,19 +126,19 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     }
 
     private void handle_events() {
-        if (!ship.is_destroyed && !ship.collision_detected) {
+        if (!GameData.myShip.is_destroyed && !GameData.myShip.collision_detected) {
             if (up_pressed)
-                ship.moveStraight();
+                GameData.myShip.moveStraight();
             if (left_pressed)
-                ship.turnLeft();
+                GameData.myShip.turnLeft();
             if (right_pressed)
-                ship.turnRight();
+                GameData.myShip.turnRight();
             if (fire_pressed)
-                ship.ship_turret.fire();
+                GameData.myShip.ship_turret.fire();
             if (a_pressed)
-                ship.ship_turret.turnLeft();
+                GameData.myShip.ship_turret.turnLeft();
             if (d_pressed)
-                ship.ship_turret.turnRight();
+                GameData.myShip.ship_turret.turnRight();
         }
 
     }
