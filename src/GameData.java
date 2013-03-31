@@ -6,7 +6,7 @@ public class GameData {
     public static ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
     public static Field sea = new Field(800,500);
     public static Enemy enemy = new Enemy(sea.spawnPoint1);
-    public static Ship myShip = new Ship(new Vec(500, 350), Ship.PLAYER1);
+    public static Ship myShip = new Ship(new Vec(850, 550), Ship.PLAYER1);
     public static Vec MyShipPosition = myShip.position;
     //public static ArrayList<Obstacle> Obst = new ArrayList();
 

@@ -12,8 +12,8 @@ public class Turret {
     private int TimeToCD = 1000;
 
     Turret(Ship s, Color color) {
-       // position = s.getPosition();
-        position=s.position;                                           //The same vector as the corresponding ship position
+        // position = s.getPosition();
+        position = s.position;                                           //The same vector as the corresponding ship position
         cooldown = 5;
         this.color = color;
 
@@ -65,13 +65,19 @@ public class Turret {
     public void AItakeAim(Vec aim_position) {
 
         double target_fire_angle = aim_position.subReturn(position).getAngle();  //target angle in radians
-        if (target_fire_angle - Math.toRadians(fire_angle) > 0.05)
+        double delta_phi = target_fire_angle - Math.toRadians(fire_angle);
+        if (delta_phi > Math.PI)
+            delta_phi -= 2*Math.PI;
+        if (delta_phi < -Math.PI)
+            delta_phi += 2*Math.PI;
+
+        if (delta_phi > 0.05)
             turnLeft();
-        else if (target_fire_angle - Math.toRadians(fire_angle) < -0.05)
+        else if (delta_phi < -0.05)
             turnRight();
         else fire();
 
-        System.out.println((int)Math.toDegrees(target_fire_angle));
+        System.out.println((int) Math.toDegrees(target_fire_angle));
 
         //Probably make boolean and return true if aimed, and false otherwise;
     }
@@ -81,12 +87,12 @@ public class Turret {
         TimeToCD++;
     }
 
-    public float getFireAngle(){
+    public float getFireAngle() {
         return fire_angle;
     }
 
-                      //moves turret along with the ship
-    public void update(){
+    //moves turret along with the ship
+    public void update() {
         //setPosition(s.position);
         fpos.setV(getPosition().addReturn(getFire_direction().multiplied(10)));
         incTimeToCD();

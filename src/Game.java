@@ -39,23 +39,14 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         this.setFocusable(true);
         this.addKeyListener(this);
         this.addMouseListener(this);
-
-        //GameData game = new GameData();
-
-        /*
-        sea = new Field(800, 500);
-        ship = new Ship(new Vec(500, 350), Ship.PLAYER1);
-        MyShipPosition = ship.position;
-        enemy = new Enemy(sea.spawnPoint1);*/
     }
 
     public void update() {
         handle_events();
         GameData.myShip.update();
-
         GameData.enemy.update();
-        GameData.enemy.move(); // AI HERE . later move it to update
-        GameData.sea.update();
+
+        GameData.sea.update();      // Nothing yet there. Mb wort to put MoveBullets there
 
         resolveCollisions();
         moveBullets();
@@ -76,7 +67,7 @@ public class Game extends JFrame implements KeyListener, MouseListener {
             GameData.myShip.CollisionCheck(GameData.enemy.Ships.get(i));
 
         //Colliions with obstales
-        for (int i = 0; i < GameData.sea.Obst.size(); i++){
+        for (int i = 0; i < GameData.sea.Obst.size(); i++) {
             GameData.myShip.CollisionCheck(GameData.sea.Obst.get(i));                      //My Ship
             for (int j = 0; j < GameData.enemy.Ships.size(); j++)                        //Enemy Ships
                 GameData.enemy.Ships.get(j).CollisionCheck(GameData.sea.Obst.get(i));
@@ -90,10 +81,14 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         g.drawRect(900, 100, 250, 500);
         //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
         g.drawString("Your ship position", 980, 150);
-        g.drawString(String.valueOf(GameData.enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
+//        g.drawString(String.valueOf(GameData.enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
         g.drawString(GameData.myShip.getPosition().toString(), 1000, 180);
         g.drawString(GameData.myShip.ship_turret.getFire_direction().toString(), 1000, 210);
         // g.drawString(getMousePosition().toString(),310,240);
+
+
+        //g.drawString(String.valueOf(GameData.enemy.Ships.get(0).direction_degrees), 910, 180);
+
 
 
         // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);

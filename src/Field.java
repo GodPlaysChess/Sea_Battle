@@ -25,7 +25,7 @@ public class Field {
 
     private void addObstacles() {
 
-        Obst.add(new Obstacle(450, 180, 90, 60, Obstacle.CLIFF));
+        Obst.add(new Obstacle(450, 280, 100, 60, Obstacle.CLIFF));
         Obst.add(new Obstacle(250, 480, 50, 80, Obstacle.ISLAND));
     }
 
@@ -36,6 +36,8 @@ public class Field {
         for (int i = 0; i < Obst.size(); i++) {
             Obst.get(i).render(g);
         }
+
+        //Vec temp = new Vec(O.getPosition().addReturn(O.Vertexes.get(i).subReturn(O.getPosition()))); - envelope curve for beauty
     }
 
     public void update() {

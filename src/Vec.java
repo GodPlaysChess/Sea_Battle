@@ -115,7 +115,8 @@ public class Vec {
         return new Vec(getX() * a, getY() * a);
     }
 
-    public double getAngle() {                   //in Rads
+    //Angle between OX and given V in Rads
+    public double getAngle() {
         if (getX() > 0) return (-Math.atan(getY() / getX()));
         else return (-Math.atan(getY() / getX()) + Math.PI);
     }
