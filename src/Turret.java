@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Turret {
+public class Turret extends ObjectOnMap {
     private Vec position = new Vec(0, 0);
     public final int cooldown; //in millisec
 
@@ -8,6 +8,7 @@ public class Turret {
     public Vec fpos = new Vec(0, 0);
     //Vector of the center of the cannon
     private Color color;
+    private boolean on_ship = false;
 
     private int TimeToCD = 1000;
 
@@ -16,6 +17,9 @@ public class Turret {
         position = s.position;                                           //The same vector as the corresponding ship position
         cooldown = 5;
         this.color = color;
+        on_ship=true;
+
+
 
     }
 
@@ -23,21 +27,32 @@ public class Turret {
         cooldown = cd;
         position.setV(xy);
         this.color = color;
+
+        Points.add(new Vec(position).addReturn(-11, 0));
+        Points.add(new Vec(position).addReturn(0, 11));
+        Points.add(new Vec(position).addReturn(11, 0));
+        Points.add(new Vec(position).addReturn(0, -11));
+        Points.add(new Vec(position).addReturn(-11, 0));
+
     }
 
     public void turnLeft() {
-        fire_angle += 5; //turn on +5degrees
+        fire_angle += 7; //turn on +5degrees
     }
 
     public void turnRight() {
-        fire_angle -= 5; //turn on -5degrees
+        fire_angle -= 7; //turn on -5degrees
     }
 
     public void render(Graphics2D g) {
         g.setColor(Color.DARK_GRAY);
+        if (is_destroyed)
+            g.setColor(Color.RED);
         GeomHelp.fillPolygon((int) fpos.getX(), (int) fpos.getY(), 15, 3, (float) Math.toRadians(fire_angle), g);
 
         g.setColor(color);
+        if (is_destroyed)
+            g.setColor(Color.RED);
         GeomHelp.FillCircle((int) position.getX(), (int) position.getY(), 10, g);
     }
 
@@ -67,9 +82,9 @@ public class Turret {
         double target_fire_angle = aim_position.subReturn(position).getAngle();  //target angle in radians
         double delta_phi = target_fire_angle - Math.toRadians(fire_angle);
         if (delta_phi > Math.PI)
-            delta_phi -= 2*Math.PI;
+            delta_phi -= 2 * Math.PI;
         if (delta_phi < -Math.PI)
-            delta_phi += 2*Math.PI;
+            delta_phi += 2 * Math.PI;
 
         if (delta_phi > 0.05)
             turnLeft();
@@ -96,5 +111,7 @@ public class Turret {
         //setPosition(s.position);
         fpos.setV(getPosition().addReturn(getFire_direction().multiplied(10)));
         incTimeToCD();
+        if (!on_ship)
+            super.update();
     }
 }

@@ -20,13 +20,11 @@ public class Field {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         addObstacles();
-
     }
 
     private void addObstacles() {
-
-        Obst.add(new Obstacle(450, 280, 100, 60, Obstacle.CLIFF));
         Obst.add(new Obstacle(250, 480, 50, 80, Obstacle.ISLAND));
+        Obst.add(new Obstacle(450, 280, 100, 60, Obstacle.CLIFF));
     }
 
 
@@ -37,11 +35,9 @@ public class Field {
             Obst.get(i).render(g);
         }
 
+        for (int i =0; i< GameData.Coins.size();i++)
+            GameData.Coins.get(i).render(g);
+
         //Vec temp = new Vec(O.getPosition().addReturn(O.Vertexes.get(i).subReturn(O.getPosition()))); - envelope curve for beauty
     }
-
-    public void update() {
-        //   checkBulletHit();
-    }
-
 }

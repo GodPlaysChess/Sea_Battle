@@ -26,6 +26,7 @@ public class AIShip extends Ship {
         super.update();
     }
 
+    //array out of bounds here
     public void AImove(ArrayList<Vec> Trajectory) {
         AImoveToTarget(Trajectory.get(0));
         if (Math.abs(position.getX() - Trajectory.get(0).getX()) < 25 && StrictMath.abs(position.getY() - Trajectory.get(0).getY()) < 25) {
@@ -36,7 +37,7 @@ public class AIShip extends Ship {
         }
     }
 
-    //here is definitely  a problem. And this problem is degrees calculation  . Withour direction adjustement
+
     public void AImoveToMe() {
         if (AIcheckPath(GameData.MyShipPosition)) {
             increment_position.setV((velocity * (float) (Math.cos(Math.toRadians(direction_degrees)))), velocity * (float) (-Math.sin(Math.toRadians(direction_degrees))));
@@ -88,8 +89,10 @@ public class AIShip extends Ship {
         if (!AIDetectMe() && has_an_order)
             AImove(Trajectory);
         else if (AIDetectMe()) {
+            has_an_order = false;
             Trajectory.clear();
-            ship_turret.AItakeAim(GameData.MyShipPosition);
+            if (!GameData.myShip.is_destroyed)
+                ship_turret.AItakeAim(GameData.MyShipPosition);
             if (AIcalculateDistance() > 120)
                 AImoveToMe();
         }
@@ -119,7 +122,7 @@ public class AIShip extends Ship {
 
 
     //Simply doubles the distance between center of the Island to it vertexes hence, add new envelope curve        !may be worth doing this 1.5 of value. Or Vert+1/2PrevVec+1/2NextVec
-
+                                                   //New algorythm
     private void AIestimateTrajectory(Obstacle O) {
         for (int i = 0; i < O.Vertexes.size() - 1; i++) {
             Vec temp = new Vec((O.Vertexes.get(i).subReturn(O.getPosition())));

@@ -93,6 +93,11 @@ public class GeomHelp {
 
     }
 
+    public static void DrawCircle(int x, int y, int r, Graphics2D g) {
+        g.drawOval(x - r, y - r, 2 * r, 2 * r);
+
+    }
+
     public static void renderPolygon(ArrayList<Vec> AV, Graphics2D g) {
 
         Polygon p = new Polygon();

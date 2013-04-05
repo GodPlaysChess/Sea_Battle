@@ -19,6 +19,8 @@ public class ObjectOnMap {
 
     protected void destroy() {
         is_destroyed = true;
+        if (this.equals(GameData.myShip)==false && this.decomposition != 5) //It was tricky way to write (if this!=coin) cuz only coin has decomposition time 5
+            GameData.score++;
         decompositionStart();
     }
 
@@ -31,13 +33,13 @@ public class ObjectOnMap {
         decomposition -= dec_speed;
     }
 
-    private void checkBulletHit() {
+    protected void checkBulletHit() {
         for (int j = GameData.Bullets.size() - 1; j >= 0; j--)
             for (int i = 0; i < Points.size() - 1; i++) {
                 if (Vec.linesIntersect(GameData.Bullets.get(j).getPos(), GameData.Bullets.get(j).getNextPos(), Points.get(i), Points.get(i + 1))) {
-                    System.out.println("HIT");
-                    destroy();
                     GameData.Bullets.remove(j);
+                    if (!is_destroyed)
+                        destroy();
                     break;
                 }
             }

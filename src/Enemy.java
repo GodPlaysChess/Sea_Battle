@@ -9,22 +9,30 @@ public class Enemy {
     private int shipCD = 50;
 
 
-
-
     Enemy(Vec v) {
         Ships.add(new AIShip(v, Ship.ENEMY));
+        Turrets.add(new AITurret(GameData.sea.Obst.get(0).getPosition(), 100, GameData.ENEMY));
     }
 
     public void render(Graphics2D g) {
-        for (int i = 0; i < Ships.size(); i++) {Ships.get(i).render(g);
-            Ships.get(i).AIrenderTrajectory(g);}
+        for (int i = 0; i < Ships.size(); i++) {
+            Ships.get(i).render(g);
+            Ships.get(i).AIrenderTrajectory(g);
+        }
+        for (int i = 0; i < Turrets.size(); i++)
+            Turrets.get(i).render(g);
     }
 
     public void update() {
         for (int i = 0; i < Ships.size(); i++) {
             Ships.get(i).update();
-            if (Ships.get(i).decomposition == 0)
+            if (Ships.get(i).decomposition == 0)                       //<-- move to ship
                 Ships.remove(i);
+        }
+        for (int i = 0; i < Turrets.size(); i++) {
+            Turrets.get(i).update();
+            if (Turrets.get(i).decomposition == 0)
+            Turrets.remove(i);
         }
 
         //Counter for AI ship to respawn;
@@ -40,8 +48,8 @@ public class Enemy {
         }
     }
 
-    public void move(){
-        for (int i = 0; i < Ships.size(); i++){
+    public void move() {
+        for (int i = 0; i < Ships.size(); i++) {
             Ships.get(i).AImove();
         }
     }

@@ -9,16 +9,6 @@ import java.util.ArrayList;
 
 public class Game extends JFrame implements KeyListener, MouseListener {
 
-  /*
-    private Ship ship = null;
-    private Field sea = null;
-
-    private Enemy enemy = null;
-
-    public static ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
-    public static Vec MyShipPosition = new Vec();
-*/
-
     private boolean up_pressed = false;
     private boolean down_pressed = false;
     private boolean left_pressed = false;
@@ -26,7 +16,6 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     private boolean fire_pressed = false;
     private boolean a_pressed = false;
     private boolean d_pressed = false;
-
 
     Game() {
         super("Sea Battle");
@@ -42,18 +31,26 @@ public class Game extends JFrame implements KeyListener, MouseListener {
     }
 
     public void update() {
-        handle_events();
+        handle_events();      //keyboard -> gameloop
         GameData.myShip.update();
         GameData.enemy.update();
-
-        GameData.sea.update();      // Nothing yet there. Mb wort to put MoveBullets there
-
+        coinsUpdate();
         resolveCollisions();
         moveBullets();
 
         GameData.enemy.addShip(GameData.sea.spawnPoint1);
+
+        GameData.increaseTimeCounter();
     }
 
+    private void coinsUpdate() {
+        if (GameData.getTimeCounter() % 300 == 0)
+            GameData.Coins.add(new Coin());
+        for (int i = 0; i < GameData.Coins.size(); i++)
+            GameData.Coins.get(i).update();
+    }
+
+    //move bollets goes to bullets; or somewhere else
     public void moveBullets() {
         for (int j = 0; j < GameData.Bullets.size(); j++) {
             GameData.Bullets.get(j).move();
@@ -80,18 +77,17 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         g.setColor(Color.BLACK);
         g.drawRect(900, 100, 250, 500);
         //g.drawString(String.valueOf(enemy.Ships.get(0).is_destroyed), 910, 150);
-        g.drawString("Your ship position", 980, 150);
+        g.drawString("Your ship position", 980, 450);
 //        g.drawString(String.valueOf(GameData.enemy.Ships.get(0).ship_turret.getFireAngle()), 910, 180);
-        g.drawString(GameData.myShip.getPosition().toString(), 1000, 180);
-        g.drawString(GameData.myShip.ship_turret.getFire_direction().toString(), 1000, 210);
+        g.drawString(GameData.myShip.getPosition().toString(), 1000, 480);
+        g.drawString(GameData.myShip.ship_turret.getFire_direction().toString(), 1000, 510);
         // g.drawString(getMousePosition().toString(),310,240);
-
-
         //g.drawString(String.valueOf(GameData.enemy.Ships.get(0).direction_degrees), 910, 180);
-
-
-
         // g.drawString(Bullets.get(0).getPos().toString(), 950, 180);
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString("Score: ", 980, 150);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString(String.valueOf(GameData.score), 1010, 190);
 
     }
 
@@ -103,7 +99,8 @@ public class Game extends JFrame implements KeyListener, MouseListener {
             g = (Graphics2D) bf.getDrawGraphics();
             g.clearRect(0, 0, 1224, 768);
             GameData.sea.render(g);
-            GameData.myShip.render(g);
+            if (GameData.myShip.decomposition > 0)
+                GameData.myShip.render(g);
             GameData.enemy.render(g);
             render_statistics(g);
 
@@ -165,8 +162,14 @@ public class Game extends JFrame implements KeyListener, MouseListener {
             case KeyEvent.VK_D:
                 d_pressed = true;
                 break;
+            case KeyEvent.VK_N: {
+                GameData.myShip = new Ship(new Vec(850, 550), Ship.PLAYER1);
+                GameData.MyShipPosition = GameData.myShip.position;
+            }
+            break;
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);
+
 
         }
     }

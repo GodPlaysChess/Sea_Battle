@@ -4,6 +4,10 @@ import java.util.*;
 public class Obstacle {
 
 
+    public int getType() {
+        return type;
+    }
+
     private int type;
     private Vec position = new Vec(0, 0);
     private int size;
@@ -12,11 +16,6 @@ public class Obstacle {
     public final static int ISLAND = 2;
 
     public ArrayList<Vec> Vertexes = new ArrayList();
-
-    public int getVertSize() {
-        return Vertexes.size();
-    }
-
 
     Obstacle(int xpos, int ypos, int size, int num_vertexes, int type) {
         this.size = size;
@@ -30,11 +29,11 @@ public class Obstacle {
         Vertexes.add(Vertexes.get(0));
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
 
-    public Vec getPosition(){
+    public Vec getPosition() {
         return position;
     }
 

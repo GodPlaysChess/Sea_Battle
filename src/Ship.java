@@ -1,3 +1,5 @@
+import com.sun.org.apache.bcel.internal.generic.CompoundInstruction;
+
 import java.awt.*;
 
 public class Ship extends ObjectOnMap {
@@ -26,6 +28,7 @@ public class Ship extends ObjectOnMap {
         length = 20;
         width = 10;
         velocity = 5;
+        //decomposition=100;
 
 
         for (int i = 0; i < 5; i++) {
@@ -36,7 +39,9 @@ public class Ship extends ObjectOnMap {
     }
 
     public void update() {
-        move();
+
+        if (!is_destroyed)
+            move();
         super.update();
         ship_turret.update();
         Points = GeomHelp.findPolygon(position.getX(), position.getY(), length, width, (float) Math.toRadians(direction_degrees));
@@ -49,12 +54,12 @@ public class Ship extends ObjectOnMap {
     }
 
     public void turnLeft() {
-        increment_direction_degrees = 5;
+        increment_direction_degrees = 7;
         ship_turret.turnLeft();
     }
 
     public void turnRight() {
-        increment_direction_degrees -= 5;
+        increment_direction_degrees -= 7;
         ship_turret.turnRight();
     }
 
@@ -68,14 +73,34 @@ public class Ship extends ObjectOnMap {
                 }
     }
 
+
     public void CollisionCheck(Obstacle obstacle) {
+        for (int i = 0; i < 4; i++)
+            if (Points.get(i).getX() < GameData.sea.borderX || Points.get(i).getX() > (GameData.sea.borderX + GameData.sea.sizeX) || Points.get(i).getY() < GameData.sea.borderY || Points.get(i).getY() > (GameData.sea.borderY + GameData.sea.sizeY)) {
+                collision_detected = true;
+                moveback();
+            }                   //intersection with borders of the sea
+
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < obstacle.Vertexes.size() - 1; j++)
                 if (Vec.linesIntersect(Points.get(i), Points.get(i + 1), obstacle.Vertexes.get(j), obstacle.Vertexes.get(j + 1))) {
                     collision_detected = true;
                     moveback();
                 }
-    }
+
+        //and with coins. It is better to write it separately, or even alltogether in the other method
+        for(int i=0; i<GameData.Coins.size();i++){
+            if (position.insideCircle(GameData.Coins.get(i).position.getX(), GameData.Coins.get(i).position.getY(), GameData.Coins.get(i).radii))
+            {
+                GameData.Coins.remove(i);
+                if (this.equals(GameData.myShip))
+                    GameData.score++;
+                else GameData.score--;
+            }
+        }
+
+
+            }
 
     public void render(Graphics2D g) {
         if (!is_destroyed) {

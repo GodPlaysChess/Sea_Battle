@@ -41,7 +41,7 @@ public class Vec {
     }
 
     public void setY(float b) {
-        x = b;
+        y = b;
     }
 
     public int compareTo(Vec v) {
@@ -70,13 +70,13 @@ public class Vec {
         return ((float) Math.sqrt((v.getX() - x) * (v.getX() - x) + (v.getY() - y) * (v.getY() - y)));
     }
 
-    public float distance(Vec v1, Vec v2){
+    public float distance(Vec v1, Vec v2) {
         float s1, s2, s3;
         s1 = this.subReturn(v1).length();
         s2 = this.subReturn(v2).length();
         s3 = v2.subReturn(v1).length();
 
-        return (float)(Math.sqrt(s2*s2-(s2*s2-s3*s3-s1*s1)*(s2*s2-s3*s3-s1*s1)/(4*s3*s3)));
+        return (float) (Math.sqrt(s2 * s2 - (s2 * s2 - s3 * s3 - s1 * s1) * (s2 * s2 - s3 * s3 - s1 * s1) / (4 * s3 * s3)));
     }
 
     public void add(float a) {
@@ -121,6 +121,10 @@ public class Vec {
         else return (-Math.atan(getY() / getX()) + Math.PI);
     }
 
+    public double getAngle(Vec v1) {
+        return this.addReturn(v1).getAngle();
+    }
+
     public Vec normalize() {
 
         return new Vec(getX() / length(), getY() / length());
@@ -144,12 +148,28 @@ public class Vec {
         return (getX() + " , " + getY());
     }
 
-    static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
+    public static boolean linesIntersect(Vec a1, Vec a2, Vec b1, Vec b2) {
 
         float a = (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() + b2.getX() * a1.getY() + b1.getX() * b2.getY() - b2.getX() * b1.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
         float b = -(a1.getX() * a2.getY() - a2.getX() * a1.getY() - a1.getX() * b1.getY() + b1.getX() * a1.getY() + a2.getX() * b1.getY() - b1.getX() * a2.getY()) / (a1.getX() * b1.getY() - b1.getX() * a1.getY() - a1.getX() * b2.getY() - a2.getX() * b1.getY() + b1.getX() * a2.getY() + b2.getX() * a1.getY() + a2.getX() * b2.getY() - b2.getX() * a2.getY());
 
         return (a > 0 && a < 1 && b > 0 && b < 1);
+    }
+
+    public Vec[] buildParralel(Vec start, Vec end, float shift) {
+        double alpha = start.getAngle(end);
+        Vec[] result = new Vec[2];
+        result[0] = start.addReturn((float) Math.cos(alpha), shift * (float) Math.sin(alpha));
+        result[1] = end.addReturn((float) Math.cos(alpha), shift * (float) Math.sin(alpha));
+        return result;
+    }
+
+    public static Vec findIntersection(Vec a1, Vec a2, Vec a3, Vec a4) {
+        return a1; //!!!!!!!!!!!!!!
+    }
+
+    public boolean insideCircle(float x, float y, float radii){
+        return ((getX()-x)*(getX()-x)+(getY()-y)*(getY()-y) < radii*radii);
     }
 
 
